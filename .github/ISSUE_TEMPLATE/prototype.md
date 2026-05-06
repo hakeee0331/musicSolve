@@ -1,3 +1,11 @@
+---
+name: prototype
+about: 실험
+title: "[proto] "
+labels: prototype
+assignees: ''
+---
+
 ## 실험 목적
 
 ## 확인하려는 인터랙션
