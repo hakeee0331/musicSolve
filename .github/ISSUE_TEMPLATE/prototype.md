@@ -1,6 +1,6 @@
 ---
 name: prototype
-about: 실험
+about: 실험용 프로토타이핑
 title: "[proto] "
 labels: prototype
 assignees: ''
