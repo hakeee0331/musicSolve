@@ -50,6 +50,26 @@ void ofApp::setKeyToMIDI() {
 	keyToMidi[']'] = 91; // G7
 }
 
+std::string ofApp::getPatternDisplayText() {
+	char patternInput[] = {'_','_','_','_',};
+	
+	if (!typed.empty()) {
+		for (int i = 0; i < patternLength && typed.size() > i; i++) {
+			patternInput[i] = typed.at(i);
+		}
+	}
+	
+	
+	std::string text = "";
+	for (auto& x: patternInput) {
+		text += x;
+		text += ' ';
+	}
+	
+	
+	return text;
+}
+
 void ofApp::setup(){
 	ofSetEscapeQuitsApp(false);
 	
@@ -81,14 +101,47 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	
+	ofBackground(0);
+	
+	ofSetColor(100);
+	ofDrawLine(0, ofGetHeight() / 2, ofGetWidth(), ofGetHeight() / 2);
+	ofDrawLine(ofGetWidth() / 2, 0, ofGetWidth() / 2, ofGetHeight());
+	
 	ofSetColor(255);
 	std::string debugText = "";
 	for (auto& key: pressedKeys) {
 		debugText = debugText + '\n'
 		+ "KEY PRESSED:" + ofToString(key) + " NOTE: " + ofToString(keyToMidi[key]);
 	}
+	ofDrawBitmapString("test", 0, ofGetHeight());
 	ofDrawBitmapString(debugText, 50, 50);
 	ofDrawBitmapString(typed, 50, 100);
+	
+	
+	
+	std::string patternText = getPatternDisplayText();
+	float scale = 3.f;
+	
+	ofRectangle bounds = bitmapFont.getBoundingBox(patternText, 0, 0, OF_BITMAPMODE_SIMPLE, true);
+
+	float scaledWidth = bounds.getWidth() * scale;
+	float scaledHeight = bounds.getHeight() * scale;
+	
+	float x = ofGetWidth() / 2.0f - scaledWidth / 2.0f;
+	float y = ofGetHeight() / 2.0f - scaledHeight / 2.0f;
+	
+	ofPushMatrix();
+	
+	ofTranslate(x, y);
+	ofScale(scale, scale);
+
+	ofSetDrawBitmapMode(OF_BITMAPMODE_MODEL);
+	ofDrawBitmapString(patternText, 0, bounds.getHeight() / 2.0f);
+	ofSetDrawBitmapMode(OF_BITMAPMODE_SCREEN);
+	
+	ofPopMatrix();
+	
 }
 
 //--------------------------------------------------------------

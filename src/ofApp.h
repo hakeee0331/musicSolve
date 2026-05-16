@@ -6,7 +6,8 @@
 #include <unordered_set>
 
 class ofApp : public ofBaseApp{
-	public:
+public:
+	ofBitmapFont bitmapFont;
 	
 	ofxMidiOut midiOut;
 	const string MIDI_PORT = "IAC Driver ofx_to_FL";
@@ -22,7 +23,10 @@ class ofApp : public ofBaseApp{
 	bool isTypping = false;
 	uint64_t typeStart = 0;
 	
+	std::vector<char> patternInput;
+	int patternLength = 4;
 
+	std::string getPatternDisplayText();
 	
 	void setKeyToMIDI();
 	void sendNoteOn(int note);
