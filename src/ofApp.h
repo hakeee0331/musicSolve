@@ -35,6 +35,17 @@ public:
 	ofxMidiMessage midiMessage;
 	std::string lastMidiText = "No Midi In...";
 	
+	// MIDI CLOCK
+	int clockCount = 0;
+	int beatCount = 0;
+	
+	uint64_t lastBeatTime = 0;
+	float bpm = 0.f;
+	
+	float pulse = 0.f;
+	float pulseTarget = 0.f;
+	float baseRadius = 80.f;
+	float pulseRadius = 80.f;
 	
 	void setKeyToMIDI();
 	void sendNoteOn(int note);
