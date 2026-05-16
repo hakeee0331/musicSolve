@@ -1,3 +1,8 @@
+/**
+ * performance control test -> midi out channel 2, MIDI_CONTROL_CHANNEL 사용
+ *
+ */
+
 #include "ofApp.h"
 
 //--------------------------------------------------------------
@@ -151,6 +156,19 @@ void ofApp::exit(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+	/* performance control test
+	if (key == '1') {
+		midiOut.sendNoteOn(MIDI_CONTROL_CHANNEL, 0, MIDI_VELOCITY);
+	}
+	if (key == '4') {
+		midiOut.sendNoteOn(MIDI_CONTROL_CHANNEL, 15, MIDI_VELOCITY);
+	}
+	if (key == '0') {
+		midiOut.sendNoteOn(MIDI_CONTROL_CHANNEL, 125, MIDI_VELOCITY);
+	} --- test end */
+	
+	
+	
 	if (key == OF_KEY_ESC) { panicReset(); return; }
 	if (!keyToMidi.contains(key)) { return; }
 	if (pressedKeys.contains(key)) { return; }
@@ -168,6 +186,12 @@ void ofApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
+	/* performance control test
+	if (key == '0') {
+		midiOut.sendNoteOff(MIDI_CONTROL_CHANNEL, 125, MIDI_VELOCITY);
+	} --- end test */
+	
+	
 	if (!keyToMidi.contains(key)) { return; }
 	if (!pressedKeys.contains(key)) { return; }
 

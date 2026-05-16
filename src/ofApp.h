@@ -12,6 +12,7 @@ public:
 	ofxMidiOut midiOut;
 	const string MIDI_PORT = "IAC Driver ofx_to_FL";
 	const int MIDI_CHANNEL = 1;
+	const int MIDI_CONTROL_CHANNEL = 2;
 	const int MIDI_VELOCITY = 100;
 	
 	std::unordered_map<int, int> keyToMidi;		// key mapping
@@ -25,7 +26,6 @@ public:
 	
 	std::vector<char> patternInput;
 	int patternLength = 4;
-
 	std::string getPatternDisplayText();
 	
 	void setKeyToMIDI();
