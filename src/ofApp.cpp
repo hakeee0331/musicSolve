@@ -75,11 +75,50 @@ std::string ofApp::getPatternDisplayText() {
 	return text;
 }
 
+void ofApp::newMidiMessage(ofxMidiMessage& msg) {
+	midiMessage = msg;
+	
+	string typeText;
+	
+	switch (msg.status) {
+		case MIDI_NOTE_ON:
+			typeText = "NOTE ON";
+			break;
+		case MIDI_NOTE_OFF:
+			typeText = "NOTE OFF";
+			break;
+		case MIDI_CONTROL_CHANGE:
+			typeText = "CONTROL CHANGE";
+			break;
+			
+		default:
+			typeText = "OTHER";
+			break;
+	}
+	
+	lastMidiText =
+			typeText +
+			" | channel: " + ofToString(msg.channel) +
+			" | pitch: " + ofToString(msg.pitch) +
+			" | velocity: " + ofToString(msg.velocity) +
+			" | control: " + ofToString(msg.control) +
+			" | value: " + ofToString(msg.value);
+	
+	ofLogNotice() << lastMidiText;
+}
+
 void ofApp::setup(){
 	ofSetEscapeQuitsApp(false);
 	
 	midiOut.listOutPorts();
 	midiOut.openPort(MIDI_PORT);
+	
+	// midi in test
+	midiIn.listInPorts();
+	midiIn.openPort(MIDI_IN_PORT);
+	midiIn.ignoreTypes(true, false, true);
+	midiIn.addListener(this);
+	midiIn.setVerbose(true);
 	
 	setKeyToMIDI();
 	
@@ -124,7 +163,7 @@ void ofApp::draw(){
 	ofDrawBitmapString(typed, 50, 100);
 	
 	
-	
+	// draw pattern input
 	std::string patternText = getPatternDisplayText();
 	float scale = 3.f;
 	
@@ -147,11 +186,25 @@ void ofApp::draw(){
 	
 	ofPopMatrix();
 	
+	
+	// MIDI IN TEST
+	ofSetColor(255);
+	ofDrawBitmapString("MIDI INPUT TEST", ofGetHeight() - 60, 50);
+	ofDrawBitmapString(lastMidiText, ofGetHeight() - 60, 90);
+	
+	ofDrawBitmapString("Last status: " + ofToString(midiMessage.status), ofGetHeight() - 60, 140);
+	ofDrawBitmapString("Channel: " + ofToString(midiMessage.channel), ofGetHeight() - 60, 170);
+	ofDrawBitmapString("Pitch: " + ofToString(midiMessage.pitch), ofGetHeight() - 60, 200);
+	ofDrawBitmapString("Velocity: " + ofToString(midiMessage.velocity), ofGetHeight() - 60, 230);
+	ofDrawBitmapString("Control: " + ofToString(midiMessage.control), ofGetHeight() - 60, 260);
+	ofDrawBitmapString("Value: " + ofToString(midiMessage.value), ofGetHeight() - 60, 290);
 }
 
 //--------------------------------------------------------------
 void ofApp::exit(){
-
+	// MIDI IN TEST
+	midiIn.removeListener(this);
+	midiIn.closePort();
 }
 
 //--------------------------------------------------------------

@@ -5,12 +5,13 @@
 #include <unordered_map>
 #include <unordered_set>
 
-class ofApp : public ofBaseApp{
+class ofApp : public ofBaseApp, public ofxMidiListener {
 public:
 	ofBitmapFont bitmapFont;
 	
 	ofxMidiOut midiOut;
 	const string MIDI_PORT = "IAC Driver ofx_to_FL";
+	const string MIDI_IN_PORT = "IAC Driver FL_to_ofx";
 	const int MIDI_CHANNEL = 1;
 	const int MIDI_CONTROL_CHANNEL = 2;
 	const int MIDI_VELOCITY = 100;
@@ -27,6 +28,13 @@ public:
 	std::vector<char> patternInput;
 	int patternLength = 4;
 	std::string getPatternDisplayText();
+	
+	void newMidiMessage(ofxMidiMessage& msg) override;
+	
+	ofxMidiIn midiIn;
+	ofxMidiMessage midiMessage;
+	std::string lastMidiText = "No Midi In...";
+	
 	
 	void setKeyToMIDI();
 	void sendNoteOn(int note);
