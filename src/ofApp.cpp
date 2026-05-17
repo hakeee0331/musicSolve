@@ -1,54 +1,11 @@
+/**
+ * performance control test -> midi out channel 2 사용
+ *
+ */
+
 #include "ofApp.h"
 
 //--------------------------------------------------------------
-void ofApp::sendNoteOn(int note) {
-	midiOut.sendNoteOn(MIDI_CHANNEL, note, 100);
-}
-void ofApp::sendNoteOff(int note) {
-	midiOut.sendNoteOff(MIDI_CHANNEL, note, 0);
-}
-
-void ofApp::setKeyToMIDI() {
-	// Basic Setting
-	keyToMidi[' '] = 48; // C5
-	keyToMidi[OF_KEY_BACKSPACE] = 84; // C7
-	
-	keyToMidi['z'] = 48; // C5
-	keyToMidi['x'] = 50; // D5
-	keyToMidi['c'] = 52; // E5
-	keyToMidi['v'] = 53; // F5
-	keyToMidi['b'] = 55; // G5
-	keyToMidi['n'] = 57; // A5
-	keyToMidi['m'] = 59; // B5
-	keyToMidi[','] = 60; // C6
-	keyToMidi['.'] = 62; // D6
-	keyToMidi['/'] = 64; // E6
-	
-	keyToMidi['a'] = 60; // C5
-	keyToMidi['s'] = 62; // D5
-	keyToMidi['d'] = 64; // E5
-	keyToMidi['f'] = 65; // F5
-	keyToMidi['g'] = 67; // G5
-	keyToMidi['h'] = 69; // A5
-	keyToMidi['j'] = 71; // B5
-	keyToMidi['k'] = 72; // C6
-	keyToMidi['l'] = 74; // D6
-	keyToMidi[';'] = 76; // E6
-	keyToMidi['\''] = 77; // F6
-	
-	keyToMidi['q'] = 72; // C6
-	keyToMidi['w'] = 74; // D6
-	keyToMidi['e'] = 76; // E6
-	keyToMidi['r'] = 77; // F6
-	keyToMidi['t'] = 79; // G6
-	keyToMidi['y'] = 81; // A6
-	keyToMidi['u'] = 83; // B6
-	keyToMidi['i'] = 84; // C7
-	keyToMidi['o'] = 86; // D7
-	keyToMidi['p'] = 88; // E7
-	keyToMidi['['] = 89; // F7
-	keyToMidi[']'] = 91; // G7
-}
 
 std::string ofApp::getPatternDisplayText() {
 	char patternInput[] = {'_','_','_','_',};
@@ -70,13 +27,20 @@ std::string ofApp::getPatternDisplayText() {
 	return text;
 }
 
+void ofApp::debugDraw() {
+	// guide line
+	ofSetColor(100);
+	ofDrawLine(0, ofGetHeight() / 2, ofGetWidth(), ofGetHeight() / 2);
+	ofDrawLine(ofGetWidth() / 2, 0, ofGetWidth() / 2, ofGetHeight());
+	
+	midiIn.draw();
+}
+
 void ofApp::setup(){
 	ofSetEscapeQuitsApp(false);
 	
-	midiOut.listOutPorts();
-	midiOut.openPort(MIDI_PORT);
-	
-	setKeyToMIDI();
+	midiOut.setup();
+	midiIn.setup();
 	
 }
 
@@ -84,13 +48,8 @@ void ofApp::setup(){
 void ofApp::update(){
 	uint64_t now = ofGetElapsedTimeMillis();
 	
-
-	for (auto& key: pressedKeys) {
-		int note = keyToMidi.at(key);
-		if (soundingNotes.contains(note)) continue;
-		midiOut.sendNoteOn(MIDI_CHANNEL, note, MIDI_VELOCITY);
-		soundingNotes.insert(note);
-	}
+	midiOut.update();
+	midiIn.update();
 	
 	if (isTypping && now - typeStart >= 1500) {
 		typed = "";
@@ -101,30 +60,27 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	
 	ofBackground(0);
 	
-	ofSetColor(100);
-	ofDrawLine(0, ofGetHeight() / 2, ofGetWidth(), ofGetHeight() / 2);
-	ofDrawLine(ofGetWidth() / 2, 0, ofGetWidth() / 2, ofGetHeight());
+	debugDraw();
 	
 	ofSetColor(255);
 	std::string debugText = "";
-	for (auto& key: pressedKeys) {
+	for (auto& key: midiOut.getPressedKeys()) {
 		debugText = debugText + '\n'
-		+ "KEY PRESSED:" + ofToString(key) + " NOTE: " + ofToString(keyToMidi[key]);
+		+ "KEY PRESSED:" + ofToString(key) + " NOTE: " + ofToString(midiOut.key2midi(key));
 	}
 	ofDrawBitmapString("test", 0, ofGetHeight());
 	ofDrawBitmapString(debugText, 50, 50);
 	ofDrawBitmapString(typed, 50, 100);
 	
 	
-	
+	// draw pattern input
 	std::string patternText = getPatternDisplayText();
 	float scale = 3.f;
 	
 	ofRectangle bounds = bitmapFont.getBoundingBox(patternText, 0, 0, OF_BITMAPMODE_SIMPLE, true);
-
+	
 	float scaledWidth = bounds.getWidth() * scale;
 	float scaledHeight = bounds.getHeight() * scale;
 	
@@ -135,60 +91,60 @@ void ofApp::draw(){
 	
 	ofTranslate(x, y);
 	ofScale(scale, scale);
-
+	
 	ofSetDrawBitmapMode(OF_BITMAPMODE_MODEL);
 	ofDrawBitmapString(patternText, 0, bounds.getHeight() / 2.0f);
 	ofSetDrawBitmapMode(OF_BITMAPMODE_SCREEN);
 	
 	ofPopMatrix();
 	
+	
+	
+	
 }
 
 //--------------------------------------------------------------
 void ofApp::exit(){
-
+	midiIn.exit();
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-	if (key == OF_KEY_ESC) { panicReset(); return; }
-	if (!keyToMidi.contains(key)) { return; }
-	if (pressedKeys.contains(key)) { return; }
-	if (soundingNotes.contains(keyToMidi.at(key))) return;
+	/* performance control test
+	if (key == '1') {
+		midiOut.sendNoteOn(MIDI_CONTROL_CHANNEL, 0, MIDI_VELOCITY);
+	}
+	if (key == '4') {
+		midiOut.sendNoteOn(MIDI_CONTROL_CHANNEL, 15, MIDI_VELOCITY);
+	}
+	if (key == '0') {
+		midiOut.sendNoteOn(MIDI_CONTROL_CHANNEL, 125, MIDI_VELOCITY);
+	} --- test end */
 	
+	
+	midiOut.keyPressed(key);
+	if (key == OF_KEY_ESC) { panicReset(); return; }
 
 	isTypping = true;
 	typeStart = ofGetElapsedTimeMillis();
 	if (key == OF_KEY_BACKSPACE) {
 		if (!typed.empty()) typed.pop_back();
 	} else typed += (char)key;
-	
-	pressedKeys.insert(key);
+
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-	if (!keyToMidi.contains(key)) { return; }
-	if (!pressedKeys.contains(key)) { return; }
-
-	pressedKeys.erase(key);
+	/* performance control test
+	if (key == '0') {
+		midiOut.sendNoteOff(MIDI_CONTROL_CHANNEL, 125, MIDI_VELOCITY);
+	} --- end test */
 	
-	int note = keyToMidi[key];
 	
-	if (soundingNotes.contains(note)) {
-		midiOut.sendNoteOff(MIDI_CHANNEL, note, MIDI_VELOCITY);
-		soundingNotes.erase(note);
-	}
-	
+	midiOut.keyReleased(key);
 }
 
 void ofApp::panicReset() {
-	for (auto& [key, note]: keyToMidi) {
-		sendNoteOff(note);
-	}
-	pressedKeys.clear();
-	soundingNotes.clear();
-	
 	typed = "";
 	isTypping = false;
 }
