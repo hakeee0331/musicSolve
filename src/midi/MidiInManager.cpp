@@ -26,8 +26,6 @@ void MidiInManager::exit() {
 }
 
 void MidiInManager::newMidiMessage(ofxMidiMessage& msg) {
-	midiMessage = msg;
-	
 	//Clock Update
 	if (msg.status == MIDI_TIME_CLOCK) {
 		clock.clockCount++;
@@ -53,6 +51,7 @@ void MidiInManager::newMidiMessage(ofxMidiMessage& msg) {
 	}
 	
 	//Midi In update for debug
+	midiMessage = msg;
 	string typeText;
 	switch (msg.status) {
 		case MIDI_NOTE_ON:
