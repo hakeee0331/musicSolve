@@ -15,7 +15,7 @@
 		"53939DF8-1ADE-4176-BC53-A16743611CF8" /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "1D9793A1-CFC7-45D6-86ED-CD8653BD8340" /* ofxButton.cpp */; };
 		"55F317C9-CA66-4552-BB40-9C0F6ECDFDCD" /* ofxMidiMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "B34F4F64-D490-42B5-895E-A1E965CB3663" /* ofxMidiMessage.cpp */; };
 		"59AB1E05-BCEB-4807-B853-70B97A8312D0" /* ofxSliderGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "3B07E415-907F-4324-AB03-16A65DBF2D5C" /* ofxSliderGroup.cpp */; };
-		65A6AF442FB8E11B00CDAF65 /* MidiInManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65A6AF432FB8E11400CDAF65 /* MidiInManager.cpp */; };
+		65A6AF442FB8E11B00CDAF65 /* MidiOutManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65A6AF432FB8E11400CDAF65 /* MidiOutManager.cpp */; };
 		"70631170-5880-4F56-AFEB-39ABB4C48D05" /* ofxMidiOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "932D9E04-BF55-4FA5-8E45-AF5367488914" /* ofxMidiOut.cpp */; };
 		"7718B5F8-01EC-44D3-A210-78DE7FDD5088" /* ofxMidiIn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "60E9DD83-DCAF-4B00-8D13-3B0D3CD530E7" /* ofxMidiIn.cpp */; };
 		"81EE34E8-C6D2-4159-9064-DFC732F20F0D" /* ofxRtMidiOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = "FD0E02DC-0D9F-495B-9A1A-69CD40FE8DF3" /* ofxRtMidiOut.cpp */; };
@@ -76,7 +76,7 @@
 		"60E9DD83-DCAF-4B00-8D13-3B0D3CD530E7" /* ofxMidiIn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMidiIn.cpp; sourceTree = "<group>"; };
 		65954DEF2FAACB950081F357 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		65A6AF422FB8DC9000CDAF65 /* MidiOutManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MidiOutManager.h; sourceTree = "<group>"; };
-		65A6AF432FB8E11400CDAF65 /* MidiInManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MidiInManager.cpp; sourceTree = "<group>"; };
+		65A6AF432FB8E11400CDAF65 /* MidiOutManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MidiOutManager.cpp; sourceTree = "<group>"; };
 		"674D8094-BAF2-48E5-9DB3-838C22E460ED" /* RtMidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RtMidi.cpp; sourceTree = "<group>"; };
 		"677D6BDA-4782-401A-8D80-BAC92044A79C" /* ofxGuiGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ofxGuiGroup.h; sourceTree = "<group>"; };
 		"6AFE7630-A18A-4046-81D8-AAD5C73E06FD" /* ofxGuiGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxGuiGroup.cpp; sourceTree = "<group>"; };
@@ -194,7 +194,7 @@
 		65A6AF412FB8DC0800CDAF65 /* midi */ = {
 			isa = PBXGroup;
 			children = (
-				65A6AF432FB8E11400CDAF65 /* MidiInManager.cpp */,
+				65A6AF432FB8E11400CDAF65 /* MidiOutManager.cpp */,
 				65A6AF422FB8DC9000CDAF65 /* MidiOutManager.h */,
 			);
 			path = midi;
@@ -400,7 +400,7 @@
 				"7718B5F8-01EC-44D3-A210-78DE7FDD5088" /* ofxMidiIn.cpp in Sources */,
 				"55F317C9-CA66-4552-BB40-9C0F6ECDFDCD" /* ofxMidiMessage.cpp in Sources */,
 				"70631170-5880-4F56-AFEB-39ABB4C48D05" /* ofxMidiOut.cpp in Sources */,
-				65A6AF442FB8E11B00CDAF65 /* MidiInManager.cpp in Sources */,
+				65A6AF442FB8E11B00CDAF65 /* MidiOutManager.cpp in Sources */,
 				"E990834C-7A25-414B-BFCF-B9D20E35B82A" /* ofxMidiTimecode.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
