@@ -4,22 +4,16 @@
 #include "ofxMidi.h"
 #include <unordered_map>
 #include <unordered_set>
+#include "midi/MidiOutManager.h"
 
 class ofApp : public ofBaseApp, public ofxMidiListener {
+private:
+	MidiOutManager midiOut{"IAC Driver ofx_to_FL", 1, 2, 100};
+
 public:
 	ofBitmapFont bitmapFont;
 	
-	ofxMidiOut midiOut;
-	const string MIDI_PORT = "IAC Driver ofx_to_FL";
 	const string MIDI_IN_PORT = "IAC Driver FL_to_ofx";
-	const int MIDI_CHANNEL = 1;
-	const int MIDI_CONTROL_CHANNEL = 2;
-	const int MIDI_VELOCITY = 100;
-	
-	std::unordered_map<int, int> keyToMidi;		// key mapping
-	
-	std::unordered_set<int> pressedKeys;
-	std::unordered_set<int> soundingNotes;
 	
 	std::string typed ="";
 	bool isTypping = false;
@@ -46,10 +40,6 @@ public:
 	float pulseTarget = 0.f;
 	float baseRadius = 80.f;
 	float pulseRadius = 80.f;
-	
-	void setKeyToMIDI();
-	void sendNoteOn(int note);
-	void sendNoteOff(int note);
 	
 	void panicReset();
 	
