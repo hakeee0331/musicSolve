@@ -27,74 +27,20 @@ std::string ofApp::getPatternDisplayText() {
 	return text;
 }
 
-void ofApp::newMidiMessage(ofxMidiMessage& msg) {
-	if (msg.status == MIDI_TIME_CLOCK) {
-		clockCount++;
-		
-		if (clockCount >= 24) {
-			clockCount = 0;
-			beatCount++;
-			
-			pulseTarget = 1.f;
-			uint64_t now = ofGetElapsedTimeMicros();
-			
-			if (lastBeatTime != 0) {
-				uint64_t diff = now - lastBeatTime;
-				float secondsPerBeat = diff / 1000000.f;
-				bpm = 60 / secondsPerBeat;
-			}
-			
-			lastBeatTime = now;
-			
-			ofLogNotice() << "BEAT " << beatCount << " | BPM: " << bpm;
-		}
-		return;
-	}
+void ofApp::debugDraw() {
+	// guide line
+	ofSetColor(100);
+	ofDrawLine(0, ofGetHeight() / 2, ofGetWidth(), ofGetHeight() / 2);
+	ofDrawLine(ofGetWidth() / 2, 0, ofGetWidth() / 2, ofGetHeight());
 	
-	midiMessage = msg;
-	
-	string typeText;
-	
-	switch (msg.status) {
-		case MIDI_NOTE_ON:
-			typeText = "NOTE ON";
-			break;
-		case MIDI_NOTE_OFF:
-			typeText = "NOTE OFF";
-			break;
-		case MIDI_CONTROL_CHANGE:
-			typeText = "CONTROL CHANGE";
-			break;
-			
-		default:
-			typeText = "OTHER";
-			break;
-	}
-	
-	lastMidiText =
-			typeText +
-			" | channel: " + ofToString(msg.channel) +
-			" | pitch: " + ofToString(msg.pitch) +
-			" | velocity: " + ofToString(msg.velocity) +
-			" | control: " + ofToString(msg.control) +
-			" | value: " + ofToString(msg.value);
-	
-	ofLogNotice() << lastMidiText;
+	midiIn.draw();
 }
 
 void ofApp::setup(){
 	ofSetEscapeQuitsApp(false);
 	
 	midiOut.setup();
-
-	
-	// midi in test
-	midiIn.listInPorts();
-	midiIn.openPort(MIDI_IN_PORT);
-	midiIn.ignoreTypes(false, false, false);
-	midiIn.addListener(this);
-	midiIn.setVerbose(true);
-
+	midiIn.setup();
 	
 }
 
@@ -103,29 +49,20 @@ void ofApp::update(){
 	uint64_t now = ofGetElapsedTimeMillis();
 	
 	midiOut.update();
+	midiIn.update();
 	
 	if (isTypping && now - typeStart >= 1500) {
 		typed = "";
 		isTypping = false;
 	}
 	
-	// BPM TEST
-	pulse += (pulseTarget - pulse) * 0.35f;
-	pulseTarget *= 0.75f;
-	if (pulse < 0.001f) {
-		pulse = 0.0f;
-	}
-	
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	
 	ofBackground(0);
 	
-	ofSetColor(100);
-	ofDrawLine(0, ofGetHeight() / 2, ofGetWidth(), ofGetHeight() / 2);
-	ofDrawLine(ofGetWidth() / 2, 0, ofGetWidth() / 2, ofGetHeight());
+	debugDraw();
 	
 	ofSetColor(255);
 	std::string debugText = "";
@@ -162,37 +99,13 @@ void ofApp::draw(){
 	ofPopMatrix();
 	
 	
-	// MIDI IN TEST
-	ofSetColor(255);
-	ofDrawBitmapString("MIDI INPUT TEST", ofGetHeight() - 60, 50);
-	ofDrawBitmapString(lastMidiText, ofGetHeight() - 60, 90);
-	
-	ofDrawBitmapString("Last status: " + ofToString(midiMessage.status), ofGetHeight() - 60, 140);
-	ofDrawBitmapString("Channel: " + ofToString(midiMessage.channel), ofGetHeight() - 60, 170);
-	ofDrawBitmapString("Pitch: " + ofToString(midiMessage.pitch), ofGetHeight() - 60, 200);
-	ofDrawBitmapString("Velocity: " + ofToString(midiMessage.velocity), ofGetHeight() - 60, 230);
-	ofDrawBitmapString("Control: " + ofToString(midiMessage.control), ofGetHeight() - 60, 260);
-	ofDrawBitmapString("Value: " + ofToString(midiMessage.value), ofGetHeight() - 60, 290);
-	
-	// BPM TEST
-	float radius = baseRadius + pulse * pulseRadius;
-	ofSetColor(255);
-	ofDrawCircle(ofGetWidth() / 2, ofGetHeight() / 2, radius);
-	
-	ofDrawBitmapString("MIDI Clock Pulse Test", 50, ofGetHeight() - 250);
-	ofDrawBitmapString("BPM: " + ofToString(bpm, 2), 50, ofGetHeight() - 220);
-	ofDrawBitmapString("Clock Count: " + ofToString(clockCount), 50, ofGetHeight() - 190);
-	ofDrawBitmapString("Beat Count: " + ofToString(beatCount), 50, ofGetHeight() - 160);
-	ofDrawBitmapString("Pulse: " + ofToString(pulse, 2), 50, ofGetHeight() - 130);
 	
 	
 }
 
 //--------------------------------------------------------------
 void ofApp::exit(){
-	// MIDI IN TEST
-	midiIn.removeListener(this);
-	midiIn.closePort();
+	midiIn.exit();
 }
 
 //--------------------------------------------------------------

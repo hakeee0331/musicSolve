@@ -2,18 +2,16 @@
 
 #include "ofMain.h"
 #include "ofxMidi.h"
-#include <unordered_map>
-#include <unordered_set>
 #include "midi/MidiOutManager.h"
+#include "midi/MidiInManager.h"
 
-class ofApp : public ofBaseApp, public ofxMidiListener {
+class ofApp : public ofBaseApp {
 private:
 	MidiOutManager midiOut{"IAC Driver ofx_to_FL", 1, 2, 100};
-
+	MidiInManager midiIn{"IAC Driver FL_to_ofx"};
+	
 public:
 	ofBitmapFont bitmapFont;
-	
-	const string MIDI_IN_PORT = "IAC Driver FL_to_ofx";
 	
 	std::string typed ="";
 	bool isTypping = false;
@@ -23,26 +21,8 @@ public:
 	int patternLength = 4;
 	std::string getPatternDisplayText();
 	
-	void newMidiMessage(ofxMidiMessage& msg) override;
-	
-	ofxMidiIn midiIn;
-	ofxMidiMessage midiMessage;
-	std::string lastMidiText = "No Midi In...";
-	
-	// MIDI CLOCK
-	int clockCount = 0;
-	int beatCount = 0;
-	
-	uint64_t lastBeatTime = 0;
-	float bpm = 0.f;
-	
-	float pulse = 0.f;
-	float pulseTarget = 0.f;
-	float baseRadius = 80.f;
-	float pulseRadius = 80.f;
-	
 	void panicReset();
-	
+	void debugDraw();
 	
 	
 	
