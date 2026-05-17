@@ -1,6 +1,6 @@
 /**
- * performance control test -> midi out channel 2, MIDI_CONTROL_CHANNEL 사용
- * midi in -> midi out port 1 사용, 채널 1 사용
+ * performance control test -> midi out channel 2 사용
+ *
  */
 
 #include "ofApp.h"
