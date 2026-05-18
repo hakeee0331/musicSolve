@@ -3,12 +3,14 @@
 Scene::Scene(const std::string& pattern) : patternMatcher(pattern) {}
 
 void Scene::init(){
-	
+//	setupGraphic();
 }
 void Scene::update(){
-	
+	updateGraphic();
 }
 void Scene::draw(){
+	drawGraphic();
+	
 	string inputDisplay = patternMatcher.getInputDisplay();
 	string hintDisplay = " HINT\n\n\n" + patternMatcher.getHintDisplay();
 	
@@ -56,6 +58,8 @@ void Scene::draw(){
 }
 
 bool Scene::keyPressed(int key){
+	keyPressedGrahpic();
+	
 	if (patternMatcher.input(static_cast<char>(key))) return true;
 	else return false;
 }

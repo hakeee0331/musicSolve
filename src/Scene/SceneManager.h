@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Scene.h"
+#include "IntroScene.h"
 #include <vector>
 #include <string>
 using namespace std;
 
 class SceneManager {
 private:
-	vector<Scene> scenes;
+	vector<std::unique_ptr<Scene>> scenes;
 	int currentSceneIndex = 0;
 	bool changeWait = false;
 	

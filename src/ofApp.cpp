@@ -16,6 +16,11 @@ void ofApp::debugDraw() {
 
 void ofApp::setup(){
 	ofSetEscapeQuitsApp(false);
+	ofSetFrameRate(60);
+	ofSetCircleResolution(96);
+	ofEnableSmoothing();
+	
+//	ofBackground(8, 10, 18);
 	
 	midiOut.setup();
 	midiIn.setup();
@@ -25,6 +30,7 @@ void ofApp::setup(){
 
 void ofApp::update(){
 	uint64_t now = ofGetElapsedTimeMillis();
+	
 	
 	midiOut.update();
 	if (midiIn.update()) {
@@ -40,10 +46,10 @@ void ofApp::update(){
 }
 
 void ofApp::draw(){
-	ofBackground(0);
+//	ofBackground(0);
 	
 	sceneManager.draw();
-	debugDraw();
+//	debugDraw();
 	
 	ofSetColor(255);
 	std::string debugText = "";

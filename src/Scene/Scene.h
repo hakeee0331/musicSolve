@@ -16,6 +16,12 @@ public:
 	void update();
 	void draw();
 	
+	virtual void setupGraphic() {}
+	virtual void updateGraphic() {}
+	virtual void drawGraphic() {}
+	virtual void keyPressedGrahpic() {}
+	virtual ~Scene() = default;
+	
 	bool keyPressed(int key);
 	void reset();
 	string getPattern() const;
