@@ -78,7 +78,6 @@ void OrangeScene::moveAllCircles() {
 		circle.targetPosition = next;
 	}
 
-	// 목표 위치끼리도 너무 겹치지 않도록 몇 번 보정
 	for (int i = 0; i < 8; i++) {
 		resolveCollisions();
 	}
@@ -161,30 +160,6 @@ void OrangeScene::keepInsideScreen(CircleBlob& circle) {
 	circle.targetPosition.y = ofClamp(circle.targetPosition.y, margin, ofGetHeight() - margin);
 }
 
-float OrangeScene::getPulseScale() const {
-	if (clock == nullptr) {
-		return 1.0f;
-	}
-
-	if (clock->bpm <= 0.0f) {
-		return 1.0f;
-	}
-
-	uint64_t now = ofGetElapsedTimeMicros();
-
-	float beatDurationMicros = 60000000.0f / clock->bpm;
-	float elapsed = static_cast<float>(now - clock->lastBeatTime);
-
-	float phase = elapsed / beatDurationMicros;
-	phase = ofClamp(phase, 0.0f, 1.0f);
-
-	// beat 직후 커졌다가 부드럽게 돌아오는 느낌
-	float pulse = expf(-phase * 5.0f);
-
-	float pulseAmount = 0.18f;
-
-	return 1.0f + pulse * pulseAmount;
-}
 
 void OrangeScene::drawGraphic() {
 	ofBackground(20, 11, 4);

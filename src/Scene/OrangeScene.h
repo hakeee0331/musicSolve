@@ -46,7 +46,6 @@ private:
 	void resolveCollisions();
 	void keepInsideScreen(CircleBlob& circle);
 
-	float getPulseScale() const;
 	ofColor getOrangeColor() const;
 
 public:

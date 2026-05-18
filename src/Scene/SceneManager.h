@@ -5,6 +5,7 @@
 #include "OrangeScene.h"
 #include "StringScene.h"
 #include "Clock.h"
+#include "FinalScene.h"
 #include <vector>
 #include <string>
 using namespace std;

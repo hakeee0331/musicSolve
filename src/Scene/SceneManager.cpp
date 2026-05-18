@@ -11,13 +11,11 @@ void SceneManager::setup(const Clock* clock) {
 	unique_ptr<Scene> stringScene = make_unique<StringScene>("love");
 		stringScene->setClock(clock);
 		scenes.push_back(std::move(stringScene));
-	scenes.push_back(make_unique<Scene>("life"));
-	/*
-	scenes.push_back(IntroScene("hope"));
-	scenes.push_back(Scene("pain"));
-	scenes.push_back(Scene("next"));
-	scenes.push_back(Scene("life"));
-	*/
+	
+	unique_ptr<Scene> finalScene = make_unique<FinalScene>("life");
+		finalScene->setClock(clock);
+		scenes.push_back(std::move(finalScene));
+
 	currentSceneIndex = 0;
 	
 	for (auto& x: scenes) {

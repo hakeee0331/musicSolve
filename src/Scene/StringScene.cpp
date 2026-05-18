@@ -28,7 +28,6 @@ void StringScene::generateStrings() {
 }
 
 ofColor StringScene::getStringColor() const {
-	// 연보라, 은빛, 옅은 금색 사이
 	int palette = static_cast<int>(ofRandom(3));
 
 	if (palette == 0) {
@@ -43,7 +42,6 @@ ofColor StringScene::getStringColor() const {
 }
 
 void StringScene::updateGraphic() {
-	// BPM beat 감지
 	if (clock != nullptr) {
 		if (lastBeatCount == -1) {
 			lastBeatCount = clock->beatCount;
@@ -55,7 +53,7 @@ void StringScene::updateGraphic() {
 		}
 	}
 
-	// pulse 감쇠
+
 	pulse += (pulseTarget - pulse) * 0.35f;
 	pulseTarget *= 0.75f;
 
@@ -63,7 +61,7 @@ void StringScene::updateGraphic() {
 		pulse = 0.0f;
 	}
 
-	// 현의 진동 업데이트
+
 	for (auto& line : strings) {
 		line.amplitude += (line.targetAmplitude - line.amplitude) * 0.18f;
 		line.targetAmplitude *= 0.90f;
@@ -99,7 +97,6 @@ void StringScene::drawGraphic() {
 		for (float x = 0; x <= ofGetWidth(); x += 10.0f) {
 			float wave = sin(x * line.frequency + line.phase) * line.amplitude;
 
-			// 아주 약한 기본 흔들림
 			float subtleWave = sin(x * 0.006f + line.phase * 0.4f) * 1.2f;
 
 			ofVertex(x, line.y + wave + subtleWave);
@@ -125,7 +122,6 @@ void StringScene::vibrateRandomStrings() {
 
 		strings[index].targetAmplitude = ofRandom(12.0f, 32.0f);
 
-		// 키 입력마다 살짝 다른 떨림 느낌
 		strings[index].frequency = ofRandom(0.010f, 0.026f);
 	}
 }
