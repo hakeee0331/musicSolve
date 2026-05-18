@@ -2,18 +2,13 @@
 
 #include "ofMain.h"
 #include "ofxMidi.h"
+#include "Clock.h"
 using namespace std;
 
 
 
 
 class MidiInManager : public ofxMidiListener {
-	struct Clock {
-		int clockCount = 0;
-		int beatCount = 0;
-		uint64_t lastBeatTime = 0;
-		float bpm = 0.f;
-	};
 	struct Debug {
 		// clock & beat
 		float pulse = 0.f;
@@ -48,6 +43,8 @@ public:
 	bool update();
 	void draw();
 	void exit();
+	
+	const Clock& getClock() const;
 	
 };
 

@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "PatternMatcher.h"
+#include "Clock.h"
 #include <string>
 using namespace std;
 
@@ -19,7 +20,8 @@ public:
 	virtual void setupGraphic() {}
 	virtual void updateGraphic() {}
 	virtual void drawGraphic() {}
-	virtual void keyPressedGrahpic() {}
+	virtual void keyPressedGraphic() {}
+	virtual void setClock(const Clock* clock) {}
 	virtual ~Scene() = default;
 	
 	bool keyPressed(int key);

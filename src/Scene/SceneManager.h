@@ -2,6 +2,9 @@
 
 #include "Scene.h"
 #include "IntroScene.h"
+#include "OrangeScene.h"
+#include "StringScene.h"
+#include "Clock.h"
 #include <vector>
 #include <string>
 using namespace std;
@@ -13,7 +16,7 @@ private:
 	bool changeWait = false;
 	
 public:
-	void setup();
+	void setup(const Clock* clock);
 	void update();
 	void draw();
 	bool keyPressed(int key);

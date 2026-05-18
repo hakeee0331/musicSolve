@@ -24,7 +24,7 @@ void ofApp::setup(){
 	
 	midiOut.setup();
 	midiIn.setup();
-	sceneManager.setup();
+	sceneManager.setup(&midiIn.getClock());
 	
 }
 

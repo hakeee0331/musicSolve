@@ -18,5 +18,5 @@ public:
 	void setupGraphic() override;
 	void updateGraphic() override;
 	void drawGraphic() override;
-	void keyPressedGrahpic() override;
+	void keyPressedGraphic() override;
 };

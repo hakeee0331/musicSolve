@@ -1,5 +1,9 @@
 #include "MidiInManager.h"
 
+const Clock& MidiInManager::getClock() const{
+	return clock;
+}
+
 void MidiInManager::setup() {
 	manager.listInPorts();
 	manager.openPort(MIDI_PORT);

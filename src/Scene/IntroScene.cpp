@@ -60,7 +60,7 @@ void IntroScene::drawGraphic() {
 	}
 }
 
-void IntroScene::keyPressedGrahpic() {
+void IntroScene::keyPressedGraphic() {
 	spawnIntroRipple();
 }
 

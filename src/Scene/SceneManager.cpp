@@ -1,10 +1,16 @@
 #include "SceneManager.h"
 
 
-void SceneManager::setup() {
+void SceneManager::setup(const Clock* clock) {
 	scenes.push_back(make_unique<IntroScene>("hope"));
-	scenes.push_back(make_unique<Scene>("pain"));
-	scenes.push_back(make_unique<Scene>("love"));
+	
+	unique_ptr<Scene> orange = std::make_unique<OrangeScene>("pain");
+	orange->setClock(clock);
+	scenes.push_back(std::move(orange));
+	
+	unique_ptr<Scene> stringScene = make_unique<StringScene>("love");
+		stringScene->setClock(clock);
+		scenes.push_back(std::move(stringScene));
 	scenes.push_back(make_unique<Scene>("life"));
 	/*
 	scenes.push_back(IntroScene("hope"));
@@ -13,6 +19,10 @@ void SceneManager::setup() {
 	scenes.push_back(Scene("life"));
 	*/
 	currentSceneIndex = 0;
+	
+	for (auto& x: scenes) {
+		x->init();
+	}
 }
 void SceneManager::update() {
 	scenes[currentSceneIndex]->update();
@@ -54,7 +64,8 @@ void SceneManager::nextScene() {
 	currentSceneIndex++;
 	if (currentSceneIndex >= scenes.size()) currentSceneIndex = 0;
 	
-	scenes[currentSceneIndex].reset();
+	scenes[currentSceneIndex]->reset();
+	scenes[currentSceneIndex]->init();
 	
 	changeWait = false;
 }
