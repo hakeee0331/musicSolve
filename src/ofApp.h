@@ -1,14 +1,17 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxMidi.h"
 #include "midi/MidiOutManager.h"
 #include "midi/MidiInManager.h"
+#include "Scene/SceneManager.h"
+
+
 
 class ofApp : public ofBaseApp {
 private:
 	MidiOutManager midiOut{"IAC Driver ofx_to_FL", 1, 2, 100};
 	MidiInManager midiIn{"IAC Driver FL_to_ofx"};
+	SceneManager sceneManager;
 	
 public:
 	ofBitmapFont bitmapFont;
@@ -23,7 +26,6 @@ public:
 	
 	void panicReset();
 	void debugDraw();
-	
 	
 	
 	
