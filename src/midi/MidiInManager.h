@@ -45,7 +45,7 @@ public:
 	void newMidiMessage(ofxMidiMessage& msg) override;
 	
 	void setup();
-	void update();
+	bool update();
 	void draw();
 	void exit();
 	

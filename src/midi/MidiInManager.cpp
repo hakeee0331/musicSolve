@@ -7,10 +7,15 @@ void MidiInManager::setup() {
 	manager.addListener(this);
 	manager.setVerbose(true);
 }
-void MidiInManager::update() {
-	
-	
+bool MidiInManager::update() {
 	debug.clockUpdate();
+	if (midiMessage.status == MIDI_NOTE_ON) {
+		if (midiMessage.pitch == 0 && midiMessage.velocity > 0) {
+			return true;
+		}
+	}
+	
+	return false;
 }
 
 void MidiInManager::draw() {

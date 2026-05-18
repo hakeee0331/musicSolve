@@ -13,6 +13,11 @@ void MidiOutManager::update() {
 		manager.sendNoteOn(MIDI_CHANNEL, note, MIDI_VELOCITY);
 		soundingNotes.insert(note);
 	}
+	
+	if (pendingTime - ofGetElapsedTimeMillis() > 100) {
+		offControlNote();
+	}
+	
 }
 
 void MidiOutManager::keyPressed(int key) {
@@ -88,11 +93,56 @@ void MidiOutManager::panicReset() {
 	soundingNotes.clear();
 }
 
+void MidiOutManager::changeScene(int sceneNum) {
+	switch (sceneNum) {
+		case 0:
+			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 1, MIDI_VELOCITY);
+			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 13, MIDI_VELOCITY);
+			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 25, MIDI_VELOCITY);
+			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 37, MIDI_VELOCITY);
+			pendingControlNote.push_back(1);
+			pendingControlNote.push_back(13);
+			pendingControlNote.push_back(25);
+			break;
+		case 1:
+			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 40, MIDI_VELOCITY);
+			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 52, MIDI_VELOCITY);
+			pendingControlNote.push_back(40);
+			pendingControlNote.push_back(52);
+			break;
+		case 2:
+			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 41, MIDI_VELOCITY);
+			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 53, MIDI_VELOCITY);
+			pendingControlNote.push_back(41);
+			pendingControlNote.push_back(53);
+			break;
+		case 3:
+			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 36, MIDI_VELOCITY);
+			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 48, MIDI_VELOCITY);
+			pendingControlNote.push_back(36);
+			pendingControlNote.push_back(48);
+			break;
+			
+		default:
+			return;
+	}
+	pendingTime = ofGetElapsedTimeMillis();
+}
+
+void MidiOutManager::offControlNote() {
+	for (auto& x: pendingControlNote) {
+		manager.sendNoteOff(MIDI_CHANNEL, x, 0);
+	}
+}
 
 /*---getter---*/
 
 const unordered_set<int>& MidiOutManager::getPressedKeys () const {
 	return pressedKeys;
+}
+
+const uint64_t& MidiOutManager::getPendingTime() const {
+	return pendingTime;
 }
 
 int MidiOutManager::key2midi(int key) {
