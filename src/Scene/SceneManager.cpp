@@ -1,19 +1,35 @@
 #include "SceneManager.h"
 
 
-void SceneManager::setup() {
-	scenes.push_back(Scene("hope"));
-	scenes.push_back(Scene("pain"));
-	scenes.push_back(Scene("next"));
-	scenes.push_back(Scene("life"));
+void SceneManager::setup(const Clock* clock) {
+	scenes.push_back(make_unique<IntroScene>("hope"));
 	
+	unique_ptr<Scene> orange = std::make_unique<OrangeScene>("pain");
+	orange->setClock(clock);
+	scenes.push_back(std::move(orange));
+	
+	unique_ptr<Scene> stringScene = make_unique<StringScene>("love");
+		stringScene->setClock(clock);
+		scenes.push_back(std::move(stringScene));
+	
+	unique_ptr<Scene> finalScene = make_unique<FinalScene>("life");
+		finalScene->setClock(clock);
+		scenes.push_back(std::move(finalScene));
+
 	currentSceneIndex = 0;
+	
+	for (auto& x: scenes) {
+		x->init();
+	}
 }
 void SceneManager::update() {
-	scenes[currentSceneIndex].update();
+	scenes[currentSceneIndex]->update();
 }
 void SceneManager::draw() {
-	scenes[currentSceneIndex].draw();
+	scenes[currentSceneIndex]->draw();
+	
+	ofPushStyle();
+	ofSetColor(255);
 	
 	string sceneNum;
 	if (changeWait) {
@@ -27,12 +43,13 @@ void SceneManager::draw() {
 	ofBitmapFont bitmapFont;
 	ofRectangle bounds = bitmapFont.getBoundingBox(sceneNum, 0, 0, OF_BITMAPMODE_SIMPLE, true);
 	ofDrawBitmapString(sceneNum, ofGetWidth() / 2 - bounds.getWidth() / 2, 30);
-
+	
+	ofPopStyle();
 }
 bool SceneManager::keyPressed(int key) {
 	if (changeWait) return false;
 	
-	if (scenes[currentSceneIndex].keyPressed(key)) {
+	if (scenes[currentSceneIndex]->keyPressed(key)) {
 		changeWait = true;
 		return true;
 	};
@@ -45,13 +62,14 @@ void SceneManager::nextScene() {
 	currentSceneIndex++;
 	if (currentSceneIndex >= scenes.size()) currentSceneIndex = 0;
 	
-	scenes[currentSceneIndex].reset();
+	scenes[currentSceneIndex]->reset();
+	scenes[currentSceneIndex]->init();
 	
 	changeWait = false;
 }
 
 Scene& SceneManager::getCurrentScene() {
-	return scenes[currentSceneIndex];
+	return *scenes[currentSceneIndex];
 }
 int SceneManager::getCurrentSceneIndex() const {
 	return currentSceneIndex;
