@@ -29,6 +29,7 @@ void SceneManager::draw() {
 	scenes[currentSceneIndex]->draw();
 	
 	ofPushStyle();
+	ofPushMatrix();
 	ofSetColor(255);
 	
 	string sceneNum;
@@ -37,19 +38,49 @@ void SceneManager::draw() {
 //		printf("%d \n", currentSceneIndex);
 		if (currentSceneIndex == 3) sceneNum = "It's Done... Thank you for playing!";
 	}
-	else
-		sceneNum = "Scene: " + to_string(currentSceneIndex + 1);
-	
+	else {
+//		switch (currentSceneIndex) {
+//			case 0:
+//				sceneNum = "Scene: hope";
+//				break;
+//			case 1:
+//				sceneNum = "Scene: 고통";
+//				break;
+//			case 2:
+//				sceneNum = "Scene: 사랑";
+//				break;
+//			case 3:
+//				sceneNum = "Scene: 인생";
+//				break;
+//			default:
+//				break;
+//		}
+		 sceneNum = "Scene: " + to_string(currentSceneIndex + 1);
+	}
 	ofBitmapFont bitmapFont;
 	ofRectangle bounds = bitmapFont.getBoundingBox(sceneNum, 0, 0, OF_BITMAPMODE_SIMPLE, true);
-	ofDrawBitmapString(sceneNum, ofGetWidth() / 2 - bounds.getWidth() / 2, 30);
+	float scale = 1.6f;
+	float scaledWidth = bounds.getWidth() * scale;
+	float scaledHeight = bounds.getHeight() * scale;
+	float x = ofGetWidth() / 2.0f - scaledWidth / 2.0f;
 	
+	ofTranslate(x, 0);
+	ofScale(scale, scale);
+	
+	ofSetDrawBitmapMode(OF_BITMAPMODE_MODEL);
+	
+	ofDrawBitmapString(sceneNum, 0, 60);
+	ofPopMatrix();
 	ofPopStyle();
 }
 bool SceneManager::keyPressed(int key) {
-	if (changeWait) return false;
 	
-	if (scenes[currentSceneIndex]->keyPressed(key)) {
+	if (changeWait){
+		scenes[currentSceneIndex]->keyPressedGraphic();	// 그래픽만
+		return false;
+	}
+	
+	if (scenes[currentSceneIndex]->keyPressed(key)) {	// 	그래픽과 패턴 처리 모두
 		changeWait = true;
 		return true;
 	};
