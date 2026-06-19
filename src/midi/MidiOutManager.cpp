@@ -94,33 +94,29 @@ void MidiOutManager::panicReset() {
 }
 
 void MidiOutManager::changeScene(int sceneNum) {
+	manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 6, MIDI_VELOCITY);
+	pendingControlNote.push_back(6);
 	switch (sceneNum) {
 		case 0:
-			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 1, MIDI_VELOCITY);
-			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 13, MIDI_VELOCITY);
-			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 25, MIDI_VELOCITY);
 			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 37, MIDI_VELOCITY);
-			pendingControlNote.push_back(1);
-			pendingControlNote.push_back(13);
-			pendingControlNote.push_back(25);
+			pendingControlNote.push_back(37);
 			break;
 		case 1:
 			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 40, MIDI_VELOCITY);
-			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 52, MIDI_VELOCITY);
+
 			pendingControlNote.push_back(40);
-			pendingControlNote.push_back(52);
 			break;
 		case 2:
 			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 41, MIDI_VELOCITY);
-			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 53, MIDI_VELOCITY);
 			pendingControlNote.push_back(41);
-			pendingControlNote.push_back(53);
+			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 19, MIDI_VELOCITY);
+			pendingControlNote.push_back(19);
 			break;
 		case 3:
 			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 36, MIDI_VELOCITY);
-			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 48, MIDI_VELOCITY);
 			pendingControlNote.push_back(36);
-			pendingControlNote.push_back(48);
+			manager.sendNoteOn(MIDI_CONTROL_CHANNEL, 20, MIDI_VELOCITY);
+			pendingControlNote.push_back(20);
 			break;
 			
 		default:

@@ -59,7 +59,25 @@ void ofApp::draw(){
 	}
 	ofDrawBitmapString("test", 0, ofGetHeight());
 	ofDrawBitmapString(debugText, 50, 50);
-	ofDrawBitmapString(typed, 50, 100);
+	
+	ofPushMatrix(); {
+		ofBitmapFont bitmapFont;
+		ofRectangle bounds = bitmapFont.getBoundingBox(typed, 0, 0, OF_BITMAPMODE_SIMPLE, true);
+		float scale = 1.8f;
+		float scaledWidth = bounds.getWidth() * scale;
+		float scaledHeight = bounds.getHeight() * scale;
+		float x = ofGetWidth() / 2.0f - scaledWidth / 2.0f;
+		
+		ofTranslate(0, 0);
+		ofScale(scale, scale);
+		
+		ofSetDrawBitmapMode(OF_BITMAPMODE_MODEL);
+		
+		ofDrawBitmapString(typed, 50, 120);
+		ofPopMatrix();
+	} ofPopStyle();
+	
+//	ofDrawBitmapString(typed, 50, 100);
 }
 
 void ofApp::exit(){

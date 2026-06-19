@@ -12,7 +12,7 @@ void Scene::draw(){
 	drawGraphic();
 	
 	string inputDisplay = patternMatcher.getInputDisplay();
-	string hintDisplay = " HINT\n\n\n" + patternMatcher.getHintDisplay();
+	string hintDisplay = " hint:\n\n" + patternMatcher.getHintDisplay();
 	
 //	cout << patternMatcher.getTarget() << inputDisplay << " " << hintDisplay << '\n';
 	
@@ -24,7 +24,7 @@ void Scene::draw(){
 	
 	ofPushMatrix(); {
 		ofRectangle bounds = bitmapFont.getBoundingBox(inputDisplay, 0, 0, OF_BITMAPMODE_SIMPLE, true);
-		float scale = 3.f;
+		float scale = 5.f;
 		float scaledWidth = bounds.getWidth() * scale;
 		float scaledHeight = bounds.getHeight() * scale;
 		float x = ofGetWidth() / 2.0f - scaledWidth / 2.0f;
@@ -40,7 +40,7 @@ void Scene::draw(){
 	
 	ofPushMatrix(); {
 		ofRectangle bounds = bitmapFont.getBoundingBox(hintDisplay, 0, 0, OF_BITMAPMODE_SIMPLE, true);
-		float scale = 1.f;
+		float scale = 1.3f;
 		float scaledWidth = bounds.getWidth() * scale;
 		float scaledHeight = bounds.getHeight() * scale;
 		float x = ofGetWidth() / 2.0f - scaledWidth / 2.0f;
@@ -50,7 +50,7 @@ void Scene::draw(){
 		ofScale(scale, scale);
 		
 		ofSetDrawBitmapMode(OF_BITMAPMODE_MODEL);
-		ofDrawBitmapString(hintDisplay, 0, -200);
+		ofDrawBitmapString(hintDisplay, 0, -90);
 		ofSetDrawBitmapMode(OF_BITMAPMODE_SCREEN);
 	} ofPopMatrix();	// draw hintDisplay
 	
